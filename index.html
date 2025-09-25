@@ -11,10 +11,18 @@
 
     body {
       font-family: 'Segoe UI', Arial, sans-serif;
-      background: linear-gradient(135deg, #0f0f11, #1a1a1f);
+      background: #0f0f11;
       color: #e6e6e6;
       line-height: 1.6;
       overflow-x: hidden;
+      position: relative;
+    }
+
+    canvas#bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
     }
 
     a { color: #61dafb; text-decoration: none; transition: 0.3s; }
@@ -36,11 +44,47 @@
     }
 
     header h1 { font-size: 1.3rem; color: #61dafb; font-weight: 600; }
+
+    nav {
+      display: flex;
+      gap: 20px;
+    }
     nav a {
-      margin-left: 20px;
       font-weight: bold;
     }
     nav a.active { color: #fff; text-decoration: underline; }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 5px;
+    }
+    .hamburger span {
+      width: 25px;
+      height: 3px;
+      background: #61dafb;
+      border-radius: 2px;
+      transition: 0.3s;
+    }
+
+    /* Mobile nav hidden by default */
+    nav.mobile {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      background: #151517;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+    }
+    nav.mobile a {
+      margin: 10px 0;
+    }
+    nav.mobile.show { display: flex; }
 
     /* Hero */
     #hero {
@@ -64,14 +108,8 @@
       animation: typing 3s steps(30, end) forwards, blink 0.7s infinite;
     }
 
-    @keyframes typing {
-      from { width: 0 }
-      to { width: 100% }
-    }
-
-    @keyframes blink {
-      50% { border-color: transparent }
-    }
+    @keyframes typing { from { width: 0 } to { width: 100% } }
+    @keyframes blink { 50% { border-color: transparent } }
 
     /* Sections */
     section {
@@ -82,10 +120,7 @@
       transform: translateY(40px);
       transition: all 0.8s ease;
     }
-    section.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    section.visible { opacity: 1; transform: translateY(0); }
 
     section h2 {
       text-align: center;
@@ -144,10 +179,7 @@
     .card a { font-weight: bold; }
 
     /* Contact */
-    #contact p {
-      text-align: center;
-      font-size: 1.1rem;
-    }
+    #contact p { text-align: center; font-size: 1.1rem; }
 
     /* Footer */
     footer {
@@ -162,19 +194,31 @@
 
     /* Mobile tweaks */
     @media (max-width: 768px) {
-      nav a { margin-left: 12px; font-size: 0.9rem; }
+      nav.desktop { display: none; }
+      .hamburger { display: flex; }
       section { padding: 60px 15px; }
       .card { padding: 15px; }
     }
   </style>
 </head>
 <body>
+  <!-- Background canvas -->
+  <canvas id="bg"></canvas>
 
   <!-- Navbar -->
   <header>
     <h1>Giorgio Cosentino</h1>
-    <nav>
+    <nav class="desktop">
       <a href="#hero" class="active">Home</a>
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+    <nav class="mobile" id="mobileMenu">
+      <a href="#hero">Home</a>
       <a href="#about">About</a>
       <a href="#projects">Projects</a>
       <a href="#contact">Contact</a>
@@ -229,14 +273,14 @@
   <section id="contact">
     <h2>Contact</h2>
     <p>
-      📧 <a href="mailto:giorcose02@gmail.com">giorcose02@gmail.com</a><br>
+      📧 <a href="mailto:giorgiocosentino.dev@gmail.com">giorgiocosentino.dev@gmail.com</a><br>
       🌐 <a href="https://github.com/GiorgioCosentino" target="_blank">GitHub Profile</a>
     </p>
   </section>
 
   <!-- Footer -->
   <footer>
-    © 2025 Giorgio Cosentino. Built with GitHub Pages.
+    © 2025 Giorgio Cosentino. Built with ❤️ and GitHub Pages.
   </footer>
 
   <script>
@@ -252,17 +296,77 @@
     sections.forEach(section => observer.observe(section));
 
     // Navbar active link
-    const navLinks = document.querySelectorAll("nav a");
+    const navLinks = document.querySelectorAll("nav.desktop a");
     const options = { threshold: 0.6 };
     const sectionObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if(entry.isIntersecting){
           navLinks.forEach(link => link.classList.remove("active"));
-          document.querySelector(`nav a[href="#${entry.target.id}"]`).classList.add("active");
+          document.querySelector(`nav.desktop a[href="#${entry.target.id}"]`).classList.add("active");
         }
       });
     }, options);
     sections.forEach(section => sectionObserver.observe(section));
+
+    // Hamburger menu
+    const hamburger = document.getElementById("hamburger");
+    const mobileMenu = document.getElementById("mobileMenu");
+    hamburger.addEventListener("click", () => {
+      mobileMenu.classList.toggle("show");
+      hamburger.classList.toggle("open");
+    });
+
+    // Background stars animation
+    const canvas = document.getElementById("bg");
+    const ctx = canvas.getContext("2d");
+    let stars = [];
+    let w, h;
+
+    function initStars(){
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+      stars = [];
+      for(let i=0;i<120;i++){
+        stars.push({
+          x: Math.random()*w,
+          y: Math.random()*h,
+          r: Math.random()*2,
+          d: Math.random()*0.5
+        });
+      }
+    }
+
+    function drawStars(){
+      ctx.clearRect(0,0,w,h);
+      ctx.fillStyle = "white";
+      ctx.beginPath();
+      for(let i=0;i<stars.length;i++){
+        let s = stars[i];
+        ctx.moveTo(s.x,s.y);
+        ctx.arc(s.x,s.y,s.r,0,Math.PI*2,true);
+      }
+      ctx.fill();
+      moveStars();
+    }
+
+    function moveStars(){
+      for(let i=0;i<stars.length;i++){
+        let s = stars[i];
+        s.y += s.d;
+        if(s.y > h){
+          stars[i] = {x: Math.random()*w, y: 0, r: s.r, d: s.d};
+        }
+      }
+    }
+
+    function animateStars(){
+      drawStars();
+      requestAnimationFrame(animateStars);
+    }
+
+    window.addEventListener("resize", initStars);
+    initStars();
+    animateStars();
   </script>
 </body>
 </html>
