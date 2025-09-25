@@ -12,6 +12,7 @@
       padding: 0;
       background-color: #121212;
       color: #e0e0e0;
+      scroll-behavior: smooth;
     }
     header {
       background-color: #1f1f1f;
@@ -32,6 +33,13 @@
       max-width: 900px;
       margin: 50px auto;
       padding: 0 20px;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.6s ease-out;
+    }
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
     h2 {
       color: #00d1ff;
@@ -50,11 +58,13 @@
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+      cursor: pointer;
     }
     .project-card:hover {
-      transform: translateY(-5px);
+      transform: translateY(-5px) scale(1.02);
       box-shadow: 0 8px 20px rgba(0,0,0,0.7);
+      background: #272727;
     }
     .project-card a {
       text-decoration: none;
@@ -68,41 +78,85 @@
       font-size: 0.9rem;
       background-color: #1f1f1f;
     }
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background-color: #1f1f1f;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: center;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+    nav a {
+      color: #00d1ff;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+    nav a:hover {
+      color: #00ffff;
+    }
   </style>
 </head>
 <body>
+
+  <nav>
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#footer">Contact</a>
+  </nav>
 
   <header>
     <h1>Giorgio Cosentino</h1>
     <p>Software & Medical Imaging Engineer | Linux, Automation, Machine Learning</p>
   </header>
 
-  <section>
+  <section id="about">
     <h2>About Me</h2>
-    <p>Hello! I'm Giorgio Cosentino, a software engineer with a background in computer and biomedical engineering. I am passionate about Linux, automation, medical imaging, and machine learning. I enjoy building tools that simplify complex workflows and contribute to open-source projects.</p>
+    <p>Hello! I'm Giorgio Cosentino, a software and medical imaging engineer with a background in computer and biomedical engineering. I am passionate about Linux, automation, medical imaging, and machine learning. This site showcases my projects and provides links to my GitHub repositories.</p>
   </section>
 
-  <section>
+  <section id="projects">
     <h2>Projects</h2>
     <div class="projects">
       <div class="project-card">
         <a href="https://github.com/GiorgioCosentino/Plastimatch_docker_snap" target="_blank">Plastimatch Docker Snap</a>
-        <p>Automated Snap package for Plastimatch using Docker and Snapcraft, ensuring reproducible builds.</p>
+        <p>Automated Snap package for Plastimatch using Docker and Snapcraft.</p>
       </div>
       <div class="project-card">
-        <a href="https://github.com/GiorgioCosentino/Plastimatch" target="_blank">Plastimatch</a>
-        <p>Medical image processing toolkit for registration, segmentation, and visualization of DICOM images.</p>
+        <a href="https://github.com/GiorgioCosentino/Plastimatch" target="_blank">Plastimatch Snap</a>
+        <p>The Snap package makes Plastimatch, a leading open-source medical imaging tool, installable in seconds on any Linux system with Snap.</p>
       </div>
       <div class="project-card">
-        <a href="https://github.com/GiorgioCosentino/other-repo" target="_blank">Other Project</a>
-        <p>Brief description of another relevant project you want to showcase.</p>
+        <a href="https://github.com/GiorgioCosentino/Java-Neural-Network" target="_blank">Java Neural Network</a>
+        <p>Feedforward neural network in Java applied in a mobile game.</p>
+      </div>
+      <div class="project-card">
+        <a href="https://github.com/GiorgioCosentino" target="_blank">GitHub Profile</a>
+        <p>Browse all my repositories and open-source contributions on GitHub.</p>
       </div>
     </div>
   </section>
 
-  <footer>
+  <footer id="footer">
     © 2025 Giorgio Cosentino • <a href="https://github.com/GiorgioCosentino" target="_blank">GitHub</a>
   </footer>
+
+  <script>
+    const sections = document.querySelectorAll('section');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.2 });
+
+    sections.forEach(section => observer.observe(section));
+  </script>
 
 </body>
 </html>
