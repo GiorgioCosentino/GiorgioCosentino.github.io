@@ -10,13 +10,14 @@
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #0d0d0f, #1a1a1f);
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #0f0f11, #1a1a1f);
       color: #e6e6e6;
       line-height: 1.6;
+      overflow-x: hidden;
     }
 
-    a { color: #61dafb; text-decoration: none; transition: color 0.3s; }
+    a { color: #61dafb; text-decoration: none; transition: 0.3s; }
     a:hover { color: #9ae6ff; }
 
     /* Navbar */
@@ -24,38 +25,22 @@
       position: fixed;
       width: 100%;
       top: 0;
-      background: rgba(21, 21, 23, 0.9);
+      background: rgba(21,21,23,0.95);
       padding: 15px 30px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       z-index: 1000;
+      backdrop-filter: blur(8px);
       box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-      backdrop-filter: blur(10px);
     }
 
-    header h1 { font-size: 1.4rem; color: #61dafb; font-weight: bold; }
-
-    nav { display: flex; gap: 20px; }
-    nav a { font-weight: bold; }
+    header h1 { font-size: 1.3rem; color: #61dafb; font-weight: 600; }
+    nav a {
+      margin-left: 20px;
+      font-weight: bold;
+    }
     nav a.active { color: #fff; text-decoration: underline; }
-
-    /* Mobile navbar */
-    .menu-toggle { display: none; cursor: pointer; font-size: 1.5rem; }
-    @media (max-width: 768px) {
-      nav {
-        display: none;
-        flex-direction: column;
-        background: #151517;
-        position: absolute;
-        top: 60px; right: 20px;
-        padding: 15px;
-        border-radius: 10px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.7);
-      }
-      nav.show { display: flex; }
-      .menu-toggle { display: block; color: #61dafb; }
-    }
 
     /* Hero */
     #hero {
@@ -65,7 +50,7 @@
       align-items: center;
       flex-direction: column;
       text-align: center;
-      padding: 0 20px;
+      padding: 0 10px;
     }
 
     #typing {
@@ -79,8 +64,14 @@
       animation: typing 3s steps(30, end) forwards, blink 0.7s infinite;
     }
 
-    @keyframes typing { from { width: 0 } to { width: 100% } }
-    @keyframes blink { 50% { border-color: transparent } }
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent }
+    }
 
     /* Sections */
     section {
@@ -99,18 +90,14 @@
     section h2 {
       text-align: center;
       margin-bottom: 40px;
-      font-size: 2rem;
+      font-size: 2.2rem;
       color: #61dafb;
-      position: relative;
+      animation: pulse 3s infinite;
     }
-    section h2::after {
-      content: "";
-      width: 60px;
-      height: 3px;
-      background: #61dafb;
-      display: block;
-      margin: 10px auto 0;
-      border-radius: 2px;
+
+    @keyframes pulse {
+      0%, 100% { text-shadow: 0 0 10px rgba(97,218,251,0.4); }
+      50% { text-shadow: 0 0 25px rgba(97,218,251,0.8); }
     }
 
     /* About */
@@ -119,7 +106,6 @@
       margin: auto;
       font-size: 1.1rem;
       text-align: center;
-      color: #cfcfcf;
     }
 
     /* Projects */
@@ -131,20 +117,31 @@
 
     .card {
       background: #1b1b1f;
-      padding: 25px;
+      padding: 20px;
       border-radius: 14px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-      transition: transform 0.3s, box-shadow 0.3s;
+      transition: transform 0.4s, box-shadow 0.4s;
+      opacity: 0;
+      transform: translateY(40px);
+      animation: fadeUp 1s forwards;
+    }
+    .card:nth-child(1){animation-delay:0.3s}
+    .card:nth-child(2){animation-delay:0.5s}
+    .card:nth-child(3){animation-delay:0.7s}
+    .card:nth-child(4){animation-delay:0.9s}
+
+    @keyframes fadeUp {
+      to { opacity:1; transform: translateY(0); }
     }
 
     .card:hover {
-      transform: translateY(-10px) scale(1.02);
-      box-shadow: 0 0 25px rgba(97, 218, 251, 0.5);
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 0 20px rgba(97, 218, 251, 0.6);
     }
 
-    .card h3 { margin-bottom: 12px; color: #9ae6ff; }
-    .card p { margin-bottom: 12px; font-size: 0.95rem; color: #ccc; }
-    .card a { font-weight: bold; display: inline-block; margin-top: 5px; }
+    .card h3 { margin-bottom: 10px; color: #9ae6ff; }
+    .card p { margin-bottom: 10px; font-size: 0.95rem; }
+    .card a { font-weight: bold; }
 
     /* Contact */
     #contact p {
@@ -162,6 +159,13 @@
     }
 
     .spacer { height: 70px; }
+
+    /* Mobile tweaks */
+    @media (max-width: 768px) {
+      nav a { margin-left: 12px; font-size: 0.9rem; }
+      section { padding: 60px 15px; }
+      .card { padding: 15px; }
+    }
   </style>
 </head>
 <body>
@@ -169,7 +173,6 @@
   <!-- Navbar -->
   <header>
     <h1>Giorgio Cosentino</h1>
-    <div class="menu-toggle">☰</div>
     <nav>
       <a href="#hero" class="active">Home</a>
       <a href="#about">About</a>
@@ -226,14 +229,14 @@
   <section id="contact">
     <h2>Contact</h2>
     <p>
-      📧 <a href="mailto:giorgiocosentino.dev@gmail.com">giorgiocosentino.dev@gmail.com</a><br>
+      📧 <a href="mailto:giorcose02@gmail.com">giorcose02@gmail.com</a><br>
       🌐 <a href="https://github.com/GiorgioCosentino" target="_blank">GitHub Profile</a>
     </p>
   </section>
 
   <!-- Footer -->
   <footer>
-    © 2025 Giorgio Cosentino. Built with ❤️ and GitHub Pages.
+    © 2025 Giorgio Cosentino. Built with GitHub Pages.
   </footer>
 
   <script>
@@ -260,11 +263,6 @@
       });
     }, options);
     sections.forEach(section => sectionObserver.observe(section));
-
-    // Mobile menu
-    const menuToggle = document.querySelector(".menu-toggle");
-    const nav = document.querySelector("nav");
-    menuToggle.addEventListener("click", () => nav.classList.toggle("show"));
   </script>
 </body>
 </html>
