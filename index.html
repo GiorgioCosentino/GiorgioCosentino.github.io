@@ -1,147 +1,270 @@
-import { motion } from "framer-motion";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Giorgio Cosentino | Portfolio</title>
+  <style>
+    /* Reset */
+    * {margin: 0; padding: 0; box-sizing: border-box;}
+    html { scroll-behavior: smooth; }
 
-export default function Portfolio() {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white font-sans">
-      {/* Navbar */}
-      <nav className="flex justify-between items-center px-6 py-4 border-b border-gray-800 sticky top-0 z-50 bg-black/70 backdrop-blur-md">
-        <h1 className="text-2xl font-bold text-blue-400">Giorgio Cosentino</h1>
-        <div className="space-x-6 text-gray-300 hidden sm:flex">
-          <a href="#about" className="hover:text-blue-400 transition">About</a>
-          <a href="#projects" className="hover:text-blue-400 transition">Projects</a>
-          <a href="#contact" className="hover:text-blue-400 transition">Contact</a>
-        </div>
-      </nav>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0d0d0f, #1a1a1f);
+      color: #e6e6e6;
+      line-height: 1.6;
+    }
 
-      {/* Hero Section */}
-      <section className="flex flex-col items-center justify-center text-center px-6 py-20 sm:py-32">
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight text-balance"
-        >
-          Hello, I'm <span className="text-blue-400">Giorgio Cosentino</span>
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6, duration: 1 }}
-          className="mt-4 text-gray-300 max-w-xl text-lg sm:text-xl"
-        >
-          Software & Medical Imaging Engineer – passionate about Linux, automation, medical imaging, and machine learning.
-        </motion.p>
-      </section>
+    a { color: #61dafb; text-decoration: none; transition: color 0.3s; }
+    a:hover { color: #9ae6ff; }
 
-      {/* About Section */}
-      <section id="about" className="px-6 py-16 sm:py-24 text-center">
-        <motion.h3
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-3xl sm:text-4xl font-bold mb-6"
-        >
-          About Me
-        </motion.h3>
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3, duration: 0.8 }}
-          className="text-gray-400 max-w-3xl mx-auto text-lg"
-        >
-          I’m Giorgio, an engineer with a background in computer and biomedical engineering.
-          I love building efficient, open-source solutions and working with cutting-edge technologies.
-        </motion.p>
-      </section>
+    /* Navbar */
+    header {
+      position: fixed;
+      width: 100%;
+      top: 0;
+      background: rgba(21, 21, 23, 0.9);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+      backdrop-filter: blur(10px);
+    }
 
-      {/* Projects Section */}
-      <section id="projects" className="px-6 py-16 sm:py-24 bg-gray-900/40">
-        <motion.h3
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-3xl sm:text-4xl font-bold text-center mb-12"
-        >
-          Projects
-        </motion.h3>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {[
-            {
-              title: "Plastimatch Docker Snap",
-              desc: "Automated Snap package for Plastimatch using Docker & Snapcraft.",
-              link: "https://github.com/GiorgioCosentino/Plastimatch_docker_snap"
-            },
-            {
-              title: "Plastimatch Snap",
-              desc: "Snap package for Plastimatch, making it installable on Linux in seconds.",
-              link: "https://snapcraft.io/plastimatch"
-            },
-            {
-              title: "Java Neural Network",
-              desc: "Feedforward neural network in Java applied to a mobile game.",
-              link: "https://github.com/GiorgioCosentino/JavaNN"
-            },
-            {
-              title: "GitHub Profile",
-              desc: "Explore more of my open-source projects and contributions.",
-              link: "https://github.com/GiorgioCosentino"
-            }
-          ].map((project, i) => (
-            <motion.a
-              key={i}
-              href={project.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.98 }}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.2, duration: 0.8 }}
-              className="p-6 bg-gray-800 rounded-2xl shadow-lg hover:shadow-blue-500/20 transition flex flex-col justify-between"
-            >
-              <h4 className="text-xl font-semibold text-blue-400 mb-2">{project.title}</h4>
-              <p className="text-gray-300 flex-grow">{project.desc}</p>
-            </motion.a>
-          ))}
-        </div>
-      </section>
+    header h1 { font-size: 1.4rem; color: #61dafb; font-weight: bold; }
 
-      {/* Contact Section */}
-      <section id="contact" className="px-6 py-16 sm:py-24 text-center">
-        <motion.h3
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-3xl sm:text-4xl font-bold mb-6"
-        >
-          Contact
-        </motion.h3>
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3, duration: 0.8 }}
-          className="text-gray-400 mb-6 text-lg"
-        >
-          Interested in collaborating or just want to say hi? Reach out!
-        </motion.p>
-        <a
-          href="mailto:giorgiocosentino98@gmail.com"
-          className="px-6 py-3 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition inline-block"
-        >
-          Email Me
-        </a>
-      </section>
+    nav { display: flex; gap: 20px; }
+    nav a { font-weight: bold; }
+    nav a.active { color: #fff; text-decoration: underline; }
 
-      {/* Footer */}
-      <footer className="text-center py-6 border-t border-gray-800 text-gray-500 text-sm">
-        © {new Date().getFullYear()} Giorgio Cosentino. All rights reserved.
-      </footer>
+    /* Mobile navbar */
+    .menu-toggle { display: none; cursor: pointer; font-size: 1.5rem; }
+    @media (max-width: 768px) {
+      nav {
+        display: none;
+        flex-direction: column;
+        background: #151517;
+        position: absolute;
+        top: 60px; right: 20px;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.7);
+      }
+      nav.show { display: flex; }
+      .menu-toggle { display: block; color: #61dafb; }
+    }
+
+    /* Hero */
+    #hero {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 0 20px;
+    }
+
+    #typing {
+      font-size: clamp(1.8rem, 6vw, 3rem);
+      font-weight: bold;
+      color: #61dafb;
+      border-right: 3px solid #61dafb;
+      white-space: nowrap;
+      overflow: hidden;
+      width: 0;
+      animation: typing 3s steps(30, end) forwards, blink 0.7s infinite;
+    }
+
+    @keyframes typing { from { width: 0 } to { width: 100% } }
+    @keyframes blink { 50% { border-color: transparent } }
+
+    /* Sections */
+    section {
+      padding: 80px 20px;
+      max-width: 1000px;
+      margin: auto;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s ease;
+    }
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    section h2 {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2rem;
+      color: #61dafb;
+      position: relative;
+    }
+    section h2::after {
+      content: "";
+      width: 60px;
+      height: 3px;
+      background: #61dafb;
+      display: block;
+      margin: 10px auto 0;
+      border-radius: 2px;
+    }
+
+    /* About */
+    #about p {
+      max-width: 700px;
+      margin: auto;
+      font-size: 1.1rem;
+      text-align: center;
+      color: #cfcfcf;
+    }
+
+    /* Projects */
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+    }
+
+    .card {
+      background: #1b1b1f;
+      padding: 25px;
+      border-radius: 14px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 0 25px rgba(97, 218, 251, 0.5);
+    }
+
+    .card h3 { margin-bottom: 12px; color: #9ae6ff; }
+    .card p { margin-bottom: 12px; font-size: 0.95rem; color: #ccc; }
+    .card a { font-weight: bold; display: inline-block; margin-top: 5px; }
+
+    /* Contact */
+    #contact p {
+      text-align: center;
+      font-size: 1.1rem;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #151517;
+      color: #888;
+      font-size: 0.9rem;
+    }
+
+    .spacer { height: 70px; }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header>
+    <h1>Giorgio Cosentino</h1>
+    <div class="menu-toggle">☰</div>
+    <nav>
+      <a href="#hero" class="active">Home</a>
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <div class="spacer"></div>
+
+  <!-- Hero -->
+  <section id="hero">
+    <div id="typing">Hello, I'm Giorgio Cosentino</div>
+  </section>
+
+  <!-- About -->
+  <section id="about">
+    <h2>About</h2>
+    <p>
+      I'm a <b>software and medical imaging engineer</b> with a background in computer and biomedical engineering.  
+      I am passionate about <b>Linux</b>, <b>automation</b>, <b>medical imaging</b>, and <b>machine learning</b>.  
+      This site showcases my projects and provides links to my GitHub repositories.
+    </p>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects">
+    <h2>Projects</h2>
+    <div class="projects">
+      <div class="card">
+        <h3>Plastimatch Docker Snap</h3>
+        <p>Automated Snap package for Plastimatch using Docker and Snapcraft.</p>
+        <a href="https://github.com/GiorgioCosentino/Plastimatch_docker_snap" target="_blank">View on GitHub</a>
+      </div>
+      <div class="card">
+        <h3>Plastimatch Snap</h3>
+        <p>Snap package for Plastimatch, a leading open-source medical imaging tool.</p>
+        <a href="https://github.com/GiorgioCosentino/Plastimatch_snap" target="_blank">View on GitHub</a>
+      </div>
+      <div class="card">
+        <h3>Java Neural Network</h3>
+        <p>Feedforward neural network in Java applied in a mobile game.</p>
+        <a href="https://github.com/GiorgioCosentino/java-neural-network" target="_blank">View on GitHub</a>
+      </div>
+      <div class="card">
+        <h3>GitHub Profile</h3>
+        <p>My personal GitHub profile with repositories and open-source contributions.</p>
+        <a href="https://github.com/GiorgioCosentino" target="_blank">Visit Profile</a>
+      </div>
     </div>
-  );
-}
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>
+      📧 <a href="mailto:giorgiocosentino.dev@gmail.com">giorgiocosentino.dev@gmail.com</a><br>
+      🌐 <a href="https://github.com/GiorgioCosentino" target="_blank">GitHub Profile</a>
+    </p>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    © 2025 Giorgio Cosentino. Built with ❤️ and GitHub Pages.
+  </footer>
+
+  <script>
+    // Fade-in on scroll
+    const sections = document.querySelectorAll("section");
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add("visible");
+        }
+      });
+    }, { threshold: 0.2 });
+    sections.forEach(section => observer.observe(section));
+
+    // Navbar active link
+    const navLinks = document.querySelectorAll("nav a");
+    const options = { threshold: 0.6 };
+    const sectionObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          navLinks.forEach(link => link.classList.remove("active"));
+          document.querySelector(`nav a[href="#${entry.target.id}"]`).classList.add("active");
+        }
+      });
+    }, options);
+    sections.forEach(section => sectionObserver.observe(section));
+
+    // Mobile menu
+    const menuToggle = document.querySelector(".menu-toggle");
+    const nav = document.querySelector("nav");
+    menuToggle.addEventListener("click", () => nav.classList.toggle("show"));
+  </script>
+</body>
+</html>
