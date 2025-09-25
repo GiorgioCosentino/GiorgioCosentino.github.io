@@ -9,6 +9,6 @@ Hello! I'm Giorgio Cosentino, a software and medical imaging engineer with a bac
 ## Projects
 
 - [Plastimatch Docker Snap](https://github.com/GiorgioCosentino/Plastimatch_docker_snap) – Automated Snap package for Plastimatch using Docker and Snapcraft.
-- [Plastimatch Snap](https://github.com/GiorgioCosentino/Plastimatch_snap) – The Snap package makes Plastimatch, a leading open-source medical imaging tool, installable in seconds on any Linux system with Snap.
+- [Plastimatch Snap](https://github.com/GiorgioCosentino/Plastimatch-snap) – The Snap package makes Plastimatch, a leading open-source medical imaging tool, installable in seconds on any Linux system with Snap.
 - [Java Neural Network](https://github.com/GiorgioCosentino/NeuralNetwork) – Feedforward neural network in Java applied in a mobile game.
 - [GitHub Profile](https://github.com/GiorgioCosentino) - My GitHub Profile.
