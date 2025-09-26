@@ -4,18 +4,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Giorgio Cosentino | Portfolio</title>
+  <meta name="description" content="Portfolio di Giorgio Cosentino - Software & Medical Imaging Engineer. Progetti open-source, automazione, Linux e machine learning.">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     /* Reset */
     * {margin: 0; padding: 0; box-sizing: border-box;}
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Segoe UI', Arial, sans-serif;
+      font-family: 'Inter', sans-serif;
       background: #0f0f11;
       color: #e6e6e6;
       line-height: 1.6;
       overflow-x: hidden;
       position: relative;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    body.light {
+      background: #f5f5f5;
+      color: #222;
     }
 
     canvas#bg {
@@ -43,16 +52,22 @@
       box-shadow: 0 2px 10px rgba(0,0,0,0.5);
     }
 
-    header h1 { font-size: 1.3rem; color: #61dafb; font-weight: 600; }
+    body.light header {
+      background: rgba(255,255,255,0.9);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    header h1 { font-size: 1.3rem; color: #61dafb; font-weight: 700; }
 
     nav {
       display: flex;
       gap: 20px;
     }
     nav a {
-      font-weight: bold;
+      font-weight: 600;
     }
     nav a.active { color: #fff; text-decoration: underline; }
+    body.light nav a.active { color: #000; }
 
     /* Hamburger */
     .hamburger {
@@ -69,7 +84,7 @@
       transition: 0.3s;
     }
 
-    /* Mobile nav hidden by default */
+    /* Mobile nav */
     nav.mobile {
       display: none;
       flex-direction: column;
@@ -80,11 +95,28 @@
       padding: 15px;
       border-radius: 8px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+      z-index: 1100;
     }
-    nav.mobile a {
-      margin: 10px 0;
-    }
+    nav.mobile a { margin: 10px 0; }
     nav.mobile.show { display: flex; }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 1000;
+    }
+    .overlay.show { display: block; }
+
+    /* Theme toggle */
+    .theme-toggle {
+      cursor: pointer;
+      font-size: 1.2rem;
+      margin-left: 15px;
+      color: #61dafb;
+    }
 
     /* Hero */
     #hero {
@@ -106,6 +138,12 @@
       overflow: hidden;
       width: 0;
       animation: typing 3s steps(30, end) forwards, blink 0.7s infinite;
+    }
+
+    #subtitle {
+      margin-top: 15px;
+      font-size: 1.2rem;
+      opacity: 0.85;
     }
 
     @keyframes typing { from { width: 0 } to { width: 100% } }
@@ -133,14 +171,6 @@
     @keyframes pulse {
       0%, 100% { text-shadow: 0 0 10px rgba(97,218,251,0.4); }
       50% { text-shadow: 0 0 25px rgba(97,218,251,0.8); }
-    }
-
-    /* About */
-    #about p {
-      max-width: 700px;
-      margin: auto;
-      font-size: 1.1rem;
-      text-align: center;
     }
 
     /* Projects */
@@ -178,9 +208,6 @@
     .card p { margin-bottom: 10px; font-size: 0.95rem; }
     .card a { font-weight: bold; }
 
-    /* Contact */
-    #contact p { text-align: center; font-size: 1.1rem; }
-
     /* Footer */
     footer {
       text-align: center;
@@ -214,159 +241,8 @@
       <a href="#projects">Projects</a>
       <a href="#contact">Contact</a>
     </nav>
-    <div class="hamburger" id="hamburger">
-      <span></span><span></span><span></span>
-    </div>
-    <nav class="mobile" id="mobileMenu">
-      <a href="#hero">Home</a>
-      <a href="#about">About</a>
-      <a href="#projects">Projects</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
-
-  <div class="spacer"></div>
-
-  <!-- Hero -->
-  <section id="hero">
-    <div id="typing">Hello, I'm Giorgio Cosentino</div>
-  </section>
-
-  <!-- About -->
-  <section id="about">
-    <h2>About</h2>
-    <p>
-      I'm a <b>software and medical imaging engineer</b> with a background in computer and biomedical engineering.  
-      I am passionate about <b>Linux</b>, <b>automation</b>, <b>medical imaging</b>, and <b>machine learning</b>.  
-      This site showcases my projects and provides links to my GitHub repositories.
-    </p>
-  </section>
-
-  <!-- Projects -->
-  <section id="projects">
-    <h2>Projects</h2>
-    <div class="projects">
-      <div class="card">
-        <h3>Plastimatch Docker Snap</h3>
-        <p>Automated Snap package for Plastimatch using Docker and Snapcraft.</p>
-        <a href="https://github.com/GiorgioCosentino/Plastimatch_docker_snap" target="_blank">View on GitHub</a>
+    <div style="display:flex;align-items:center;">
+      <div class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
       </div>
-      <div class="card">
-        <h3>Plastimatch Snap</h3>
-        <p>Snap package for Plastimatch, a leading open-source medical imaging tool.</p>
-        <a href="https://github.com/GiorgioCosentino/Plastimatch-snap" target="_blank">View on GitHub</a>
-      </div>
-      <div class="card">
-        <h3>Java Neural Network</h3>
-        <p>Feedforward neural network in Java applied in a mobile game.</p>
-        <a href="https://github.com/GiorgioCosentino/NeuralNetwork" target="_blank">View on GitHub</a>
-      </div>
-      <div class="card">
-        <h3>GitHub Profile</h3>
-        <p>My personal GitHub profile with repositories and open-source contributions.</p>
-        <a href="https://github.com/GiorgioCosentino" target="_blank">Visit Profile</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact -->
-  <section id="contact">
-    <h2>Contact</h2>
-    <p>
-      📧 <a href="mailto:giorcose02@gmail.com">giorcose02@gmail.com</a><br>
-      🌐 <a href="https://github.com/GiorgioCosentino" target="_blank">GitHub Profile</a>
-    </p>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    © 2025 Giorgio Cosentino. Built with GitHub Pages.
-  </footer>
-
-  <script>
-    // Fade-in on scroll
-    const sections = document.querySelectorAll("section");
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting){
-          entry.target.classList.add("visible");
-        }
-      });
-    }, { threshold: 0.2 });
-    sections.forEach(section => observer.observe(section));
-
-    // Navbar active link
-    const navLinks = document.querySelectorAll("nav.desktop a");
-    const options = { threshold: 0.6 };
-    const sectionObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting){
-          navLinks.forEach(link => link.classList.remove("active"));
-          document.querySelector(`nav.desktop a[href="#${entry.target.id}"]`).classList.add("active");
-        }
-      });
-    }, options);
-    sections.forEach(section => sectionObserver.observe(section));
-
-    // Hamburger menu
-    const hamburger = document.getElementById("hamburger");
-    const mobileMenu = document.getElementById("mobileMenu");
-    hamburger.addEventListener("click", () => {
-      mobileMenu.classList.toggle("show");
-      hamburger.classList.toggle("open");
-    });
-
-    // Background stars animation
-    const canvas = document.getElementById("bg");
-    const ctx = canvas.getContext("2d");
-    let stars = [];
-    let w, h;
-
-    function initStars(){
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-      stars = [];
-      for(let i=0;i<120;i++){
-        stars.push({
-          x: Math.random()*w,
-          y: Math.random()*h,
-          r: Math.random()*2,
-          d: Math.random()*0.5
-        });
-      }
-    }
-
-    function drawStars(){
-      ctx.clearRect(0,0,w,h);
-      ctx.fillStyle = "white";
-      ctx.beginPath();
-      for(let i=0;i<stars.length;i++){
-        let s = stars[i];
-        ctx.moveTo(s.x,s.y);
-        ctx.arc(s.x,s.y,s.r,0,Math.PI*2,true);
-      }
-      ctx.fill();
-      moveStars();
-    }
-
-    function moveStars(){
-      for(let i=0;i<stars.length;i++){
-        let s = stars[i];
-        s.y += s.d;
-        if(s.y > h){
-          stars[i] = {x: Math.random()*w, y: 0, r: s.r, d: s.d};
-        }
-      }
-    }
-
-    function animateStars(){
-      drawStars();
-      requestAnimationFrame(animateStars);
-    }
-
-    window.addEventListener("resize", initStars);
-    initStars();
-    animateStars();
-  </script>
-</body>
-</html>
+      [43dcd9a7-70db-4a1f-b0ae-981daa162054](https://github.com/buribalazs/smooth-drag-order/tree/7b40d21d076c3e31765f61481f537beaf4c5ec9f/README.md?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054 "1")<div class="theme-toggle"
