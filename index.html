@@ -5,369 +5,233 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google-site-verification" content="JwsDk0uEhNOVf-cedZI1-5mAg32D6QBWBX4jkS-qtg0" />
   <title>Giorgio Cosentino | Portfolio</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     /* Reset */
-    * {margin: 0; padding: 0; box-sizing: border-box;}
-    html { scroll-behavior: smooth; }
+    * {margin:0; padding:0; box-sizing:border-box;}
+    html {scroll-behavior:smooth;}
+    body {font-family:'Inter', Arial, sans-serif; background:#0f0f11; color:#e6e6e6; display:flex; line-height:1.6;}
 
-    body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: #0f0f11;
-      color: #e6e6e6;
-      line-height: 1.6;
-      overflow-x: hidden;
-      position: relative;
-    }
+    a {color:#61dafb; text-decoration:none;}
+    a:hover {text-decoration:underline;}
 
-    canvas#bg {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: -1;
-    }
+    /* Sidebar */
+    .sidebar {position:fixed; top:0; left:0; width:250px; height:100%; background:rgba(21,21,23,0.95); padding:30px 20px; display:flex; flex-direction:column; justify-content:space-between; z-index:1000; transition: transform 0.3s ease;}
+    .sidebar h1 {font-size:1.5rem; color:#61dafb; margin-bottom:30px;}
+    .sidebar nav a {display:block; margin:15px 0; font-weight:600; transition: color 0.3s;}
+    .sidebar nav a.active {color:#fff; text-decoration:underline;}
+    .sidebar nav a:hover {color:#9ae6ff;}
+    .sidebar footer {font-size:0.85rem; color:#888; text-align:center;}
 
-    a { color: #61dafb; text-decoration: none; transition: 0.3s; }
-    a:hover { color: #9ae6ff; }
-
-    /* Navbar */
-    header {
-      position: fixed;
-      width: 100%;
-      top: 0;
-      background: rgba(21,21,23,0.95);
-      padding: 15px 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 1000;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-    }
-
-    header h1 { font-size: 1.3rem; color: #61dafb; font-weight: 600; }
-
-    nav {
-      display: flex;
-      gap: 20px;
-    }
-    nav a {
-      font-weight: bold;
-    }
-    nav a.active { color: #fff; text-decoration: underline; }
-
-    /* Hamburger */
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      cursor: pointer;
-      gap: 5px;
-    }
-    .hamburger span {
-      width: 25px;
-      height: 3px;
-      background: #61dafb;
-      border-radius: 2px;
-      transition: 0.3s;
-    }
-
-    /* Mobile nav hidden by default */
-    nav.mobile {
-      display: none;
-      flex-direction: column;
-      position: absolute;
-      top: 60px;
-      right: 20px;
-      background: #151517;
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.6);
-    }
-    nav.mobile a {
-      margin: 10px 0;
-    }
-    nav.mobile.show { display: flex; }
+    /* Content */
+    .content {margin-left:250px; flex:1; padding:60px 20px;}
+    section {min-height:100vh; padding:80px 20px; max-width:1000px; margin:auto; opacity:0; transform:translateY(40px); transition: all 0.8s ease;}
+    section.visible {opacity:1; transform:translateY(0);}
+    section h2 {text-align:center; margin-bottom:40px; font-size:2rem; color:#61dafb;}
 
     /* Hero */
-    #hero {
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      text-align: center;
-      padding: 0 10px;
-    }
+    #hero {display:flex; justify-content:center; align-items:center; flex-direction:column; text-align:center;}
+    #typing {font-size:2.5rem; font-weight:700; color:#61dafb; border-right:3px solid #61dafb; white-space:nowrap; overflow:hidden; width:0; animation: typing 3s steps(30,end) forwards, blink 0.7s infinite;}
+    #subtitle {margin-top:20px; font-size:1.2rem; color:#9ae6ff; text-align:center;}
+    @keyframes typing {from{width:0} to{width:100%}}
+    @keyframes blink {50%{border-color:transparent}}
 
-    #typing {
-      font-size: clamp(1.8rem, 6vw, 3rem);
-      font-weight: bold;
-      color: #61dafb;
-      border-right: 3px solid #61dafb;
-      white-space: nowrap;
-      overflow: hidden;
-      width: 0;
-      animation: typing 3s steps(30, end) forwards, blink 0.7s infinite;
-    }
+    /* About Section */
+    .about-cards {display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:25px; margin-top:20px;}
+    .about-card {background:#18181c; padding:30px 25px; border-radius:15px; box-shadow:0 6px 18px rgba(0,0,0,0.6); transition: transform 0.3s, box-shadow 0.3s;}
+    .about-card:hover {transform:translateY(-5px); box-shadow:0 0 20px rgba(97,218,251,0.5);}
+    .about-card h3 {margin-bottom:20px; color:#61dafb; text-align:center; font-size:1.5rem;}
+    .about-card ul {list-style:none; padding-left:0;}
+    .about-card ul li {margin-bottom:12px; line-height:1.5; position:relative; padding-left:25px;}
+    .about-card ul li::before {content:"✓"; color:#61dafb; position:absolute; left:0; top:0; font-weight:bold;}
 
-    @keyframes typing { from { width: 0 } to { width: 100% } }
-    @keyframes blink { 50% { border-color: transparent } }
+    /* Tech lists */
+    .tech-icons {display:flex; flex-direction:column; align-items:center; gap:25px; margin-top:10px;}
+    .tech-icons div {width:100%;}
+    .tech-icons div p {font-weight:600; color:#61dafb; text-align:center; margin-bottom:10px;}
+    .tech-icons ul {list-style:disc; padding-left:25px; color:#e6e6e6;}
+    .tech-icons ul li {margin-bottom:8px;}
+    .tech-icons ul {list-style: none; padding-left: 0;}
 
-    /* Sections */
-    section {
-      padding: 80px 20px;
-      max-width: 1000px;
-      margin: auto;
-      opacity: 0;
-      transform: translateY(40px);
-      transition: all 0.8s ease;
-    }
-    section.visible { opacity: 1; transform: translateY(0); }
-
-    section h2 {
-      text-align: center;
-      margin-bottom: 40px;
-      font-size: 2.2rem;
-      color: #61dafb;
-      animation: pulse 3s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { text-shadow: 0 0 10px rgba(97,218,251,0.4); }
-      50% { text-shadow: 0 0 25px rgba(97,218,251,0.8); }
-    }
-
-    /* About */
-    #about p {
-      max-width: 700px;
-      margin: auto;
-      font-size: 1.1rem;
-      text-align: center;
-    }
 
     /* Projects */
-    .projects {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 25px;
-    }
-
-    .card {
-      background: #1b1b1f;
-      padding: 20px;
-      border-radius: 14px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-      transition: transform 0.4s, box-shadow 0.4s;
-      opacity: 0;
-      transform: translateY(40px);
-      animation: fadeUp 1s forwards;
-    }
-    .card:nth-child(1){animation-delay:0.3s}
-    .card:nth-child(2){animation-delay:0.5s}
-    .card:nth-child(3){animation-delay:0.7s}
-    .card:nth-child(4){animation-delay:0.9s}
-
-    @keyframes fadeUp {
-      to { opacity:1; transform: translateY(0); }
-    }
-
-    .card:hover {
-      transform: translateY(-10px) scale(1.03);
-      box-shadow: 0 0 20px rgba(97, 218, 251, 0.6);
-    }
-
-    .card h3 { margin-bottom: 10px; color: #9ae6ff; }
-    .card p { margin-bottom: 10px; font-size: 0.95rem; }
-    .card a { font-weight: bold; }
+    .projects {display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:25px;}
+    .card {background:#1b1b1f; padding:20px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.6); transition: transform 0.3s, box-shadow 0.3s;}
+    .card:hover {transform:translateY(-10px) scale(1.02); box-shadow:0 0 20px rgba(97,218,251,0.6);}
+    .card h3 {margin-bottom:10px; color:#9ae6ff;}
+    .card p {margin-bottom:10px; font-size:0.95rem;}
+    .card a {font-weight:600;}
 
     /* Contact */
-    #contact p { text-align: center; font-size: 1.1rem; }
+    #contact {display:flex; flex-direction:column; justify-content:center; align-items:center; min-height:80vh;}
+    .contact-cards {display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:25px; width:100%; max-width:800px;}
+    .contact-card {background:#18181c; padding:25px; border-radius:15px; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.5); transition: transform 0.3s, box-shadow 0.3s;}
+    .contact-card:hover {transform:translateY(-5px); box-shadow:0 0 20px rgba(97,218,251,0.5);}
+    .contact-card p {font-size:1.3rem; color:#61dafb; margin-bottom:10px;}
+    .contact-card a {font-weight:600; color:#e6e6e6; word-break:break-all;}
+    .contact-card a:hover {color:#9ae6ff;}
 
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: #151517;
-      color: #888;
-      font-size: 0.9rem;
-    }
+    /* Background animation */
+    body::before {content:""; position:fixed; top:0; left:0; width:100%; height:100%; background:radial-gradient(circle, rgba(97,218,251,0.15) 1px, transparent 1px); background-size:40px 40px; animation:moveBg 15s linear infinite; z-index:-1;}
+    @keyframes moveBg {from{background-position:0 0} to{background-position:40px 40px}}
 
-    .spacer { height: 70px; }
-
-    /* Mobile tweaks */
-    @media (max-width: 768px) {
-      nav.desktop { display: none; }
-      .hamburger { display: flex; }
-      section { padding: 60px 15px; }
-      .card { padding: 15px; }
-    }
+    /* Mobile */
+    .menu-toggle {display:none; position:fixed; top:15px; left:15px; background:#151517; border:none; color:#61dafb; font-size:1.5rem; padding:10px; z-index:1100; cursor:pointer; border-radius:6px;}
+    @media(max-width:768px){.sidebar{transform:translateX(-100%)}.sidebar.active{transform:translateX(0)}.content{margin-left:0}.menu-toggle{display:block}}
   </style>
 </head>
 <body>
-  <!-- Background canvas -->
-  <canvas id="bg"></canvas>
 
-  <!-- Navbar -->
-  <header>
-    <h1>Giorgio Cosentino</h1>
-    <nav class="desktop">
-      <a href="#hero" class="active">Home</a>
-      <a href="#about">About</a>
-      <a href="#projects">Projects</a>
-      <a href="#contact">Contact</a>
-    </nav>
-    <div class="hamburger" id="hamburger">
-      <span></span><span></span><span></span>
+  <button class="menu-toggle">☰</button>
+
+  <aside class="sidebar">
+    <div>
+      <h1>Giorgio Cosentino</h1>
+      <nav>
+        <a href="#hero" class="active">Home</a>
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </nav>
     </div>
-    <nav class="mobile" id="mobileMenu">
-      <a href="#hero">Home</a>
-      <a href="#about">About</a>
-      <a href="#projects">Projects</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
+    <footer>© 2025 Giorgio Cosentino</footer>
+  </aside>
 
-  <div class="spacer"></div>
+  <main class="content">
+    <!-- Hero -->
+    <section id="hero">
+      <div id="typing">Hello, I'm Giorgio Cosentino</div>
+      <div id="subtitle">Computer & Biomedical Engineer | Linux & Automation Enthusiast</div>
+    </section>
 
-  <!-- Hero -->
-  <section id="hero">
-    <div id="typing">Hello, I'm Giorgio Cosentino</div>
-  </section>
-
-  <!-- About -->
-  <section id="about">
-    <h2>About</h2>
-    <p>
-      I'm a <b>software and medical imaging engineer</b> with a background in computer and biomedical engineering.  
-      I am passionate about <b>Linux</b>, <b>automation</b>, <b>medical imaging</b>, and <b>machine learning</b>.  
-      This site showcases my projects and provides links to my GitHub repositories.
-    </p>
-  </section>
-
-  <!-- Projects -->
-  <section id="projects">
-    <h2>Projects</h2>
-    <div class="projects">
-      <div class="card">
-        <h3>Plastimatch Docker Snap</h3>
-        <p>Automated Snap package for Plastimatch using Docker and Snapcraft.</p>
-        <a href="https://github.com/GiorgioCosentino/Plastimatch_docker_snap" target="_blank">View on GitHub</a>
+    <!-- About -->
+    <section id="about">
+      <h2>About Me</h2>
+      <p style="text-align:center; margin-bottom:40px;">
+        I'm a <b>Computer and Biomedical Engineer</b> with a strong background in software development and medical imaging.<br>
+        Passionate about <b>Linux</b>, <b>Automation</b>, <b>Open-source software packaging</b>, and <b>Machine Learning</b>.<br>
+		I enjoy solving technical challenges and creating tools that make advanced technologies more accessible to researchers and clinicians.
+      </p>
+      <div class="about-cards">
+        <div class="about-card">
+          <h3>Education</h3>
+          <ul>
+            <li><b>Bachelor's Degree</b> in Computer & Biomedical Engineering (2025)<br>Magna Graecia University, Italy</li>
+            <li><b>High School Diploma</b> in Computer Science & Telecommunications (2021)<br>Technical Industrial Institute "E. Scalfaro", Italy</li>
+          </ul>
+        </div>
+        <div class="about-card">
+          <h3>Expertise</h3>
+          <ul>
+            <li>Linux systems & virtualization (Debian/Ubuntu, VMs)</li>
+            <li>Software packaging (Snapcraft)</li>
+            <li>Medical imaging & visualization (Plastimatch, 3D Slicer)</li>
+            <li>Machine Learning (Autoencoder ECG & other projects)</li>
+            <li>Automation, scripting & containerization (Python, Bash, Docker)</li>
+          </ul>
+        </div>
+        <div class="about-card">
+          <h3>Technologies</h3>
+          <div class="tech-icons">
+            <div>
+              <p>Programming Languages</p>
+              <ul>
+                <li>Python</li>
+                <li>C++</li>
+                <li>Java</li>
+                <li>PHP</li>
+                <li>JavaScript</li>
+              </ul>
+            </div>
+            <div>
+              <p>Tools & Systems</p>
+              <ul>
+                <li>Linux</li>
+                <li>Docker</li>
+                <li>MySQL</li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="card">
-        <h3>Plastimatch Snap</h3>
-        <p>Snap package for Plastimatch, a leading open-source medical imaging tool.</p>
-        <a href="https://github.com/GiorgioCosentino/Plastimatch-snap" target="_blank">View on GitHub</a>
-      </div>
-      <div class="card">
-        <h3>Java Neural Network</h3>
-        <p>Feedforward neural network in Java applied in a mobile game.</p>
-        <a href="https://github.com/GiorgioCosentino/NeuralNetwork" target="_blank">View on GitHub</a>
-      </div>
-      <div class="card">
-        <h3>GitHub Profile</h3>
-        <p>My personal GitHub profile with repositories and open-source contributions.</p>
-        <a href="https://github.com/GiorgioCosentino" target="_blank">Visit Profile</a>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Contact -->
-  <section id="contact">
-    <h2>Contact</h2>
-    <p>
-      📧 <a href="mailto:giorcose02@gmail.com">giorcose02@gmail.com</a><br>
-      🌐 <a href="https://github.com/GiorgioCosentino" target="_blank">GitHub Profile</a>
-    </p>
-  </section>
+    <!-- Projects -->
+    <section id="projects">
+      <h2>Projects</h2>
+      <div class="projects">
+        <div class="card">
+          <h3>Plastimatch Docker Snap</h3>
+          <p>Automated Snap package for Plastimatch using Docker and Snapcraft.</p>
+          <a href="https://github.com/GiorgioCosentino/Plastimatch_docker_snap" target="_blank">View on GitHub</a>
+        </div>
+        <div class="card">
+          <h3>Plastimatch Snap</h3>
+          <p>Snap package for Plastimatch, a leading open-source medical imaging tool.</p>
+          <a href="https://github.com/GiorgioCosentino/Plastimatch_snap" target="_blank">View on GitHub</a>
+        </div>
+        <div class="card">
+          <h3>Java Neural Network</h3>
+          <p>Feedforward neural network in Java applied in a mobile game.</p>
+          <a href="https://github.com/GiorgioCosentino/java-neural-network" target="_blank">View on GitHub</a>
+        </div>
+        <div class="card">
+          <h3>GitHub Profile</h3>
+          <p>My personal GitHub profile with repositories and open-source contributions.</p>
+          <a href="https://github.com/GiorgioCosentino" target="_blank">Visit Profile</a>
+        </div>
+      </div>
+    </section>
 
-  <!-- Footer -->
-  <footer>
-    © 2025 Giorgio Cosentino. Built with GitHub Pages.
-  </footer>
+    <!-- Contact -->
+    <section id="contact">
+      <h2>Contact</h2>
+      <div class="contact-cards">
+        <div class="contact-card">
+          <p>📧 Email</p>
+          <a href="mailto:giorcose02@gmail.com">giorcose02@gmail.com</a>
+        </div>
+        <div class="contact-card">
+          <p>🌐 GitHub</p>
+          <a href="https://github.com/GiorgioCosentino" target="_blank">github.com/GiorgioCosentino</a>
+        </div>
+        <div class="contact-card">
+          <p>💼 LinkedIn</p>
+          <a href="https://www.linkedin.com/in/giorgio-cosentino-75b986363/" target="_blank">linkedin.com/in/giorgio-cosentino</a>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <script>
     // Fade-in on scroll
     const sections = document.querySelectorAll("section");
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting){
-          entry.target.classList.add("visible");
-        }
-      });
-    }, { threshold: 0.2 });
-    sections.forEach(section => observer.observe(section));
+    const observer = new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{ if(entry.isIntersecting){entry.target.classList.add("visible");} });
+    }, {threshold:0.2});
+    sections.forEach(section=>observer.observe(section));
 
     // Navbar active link
-    const navLinks = document.querySelectorAll("nav.desktop a");
-    const options = { threshold: 0.6 };
-    const sectionObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting){
-          navLinks.forEach(link => link.classList.remove("active"));
-          document.querySelector(`nav.desktop a[href="#${entry.target.id}"]`).classList.add("active");
-        }
+    const navLinks = document.querySelectorAll(".sidebar nav a");
+    const sectionObserver = new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(!entry.isIntersecting) return;
+        navLinks.forEach(link=>link.classList.remove("active"));
+        const id = entry.target.id || "";
+        const escapedId = (typeof CSS !== "undefined" && typeof CSS.escape==="function") ? CSS.escape(id) : id.replace(/([!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~])/g,"\\$1");
+        const selector = `.sidebar nav a[href="#${escapedId}"]`;
+        const link = document.querySelector(selector);
+        if(link) link.classList.add("active");
       });
-    }, options);
-    sections.forEach(section => sectionObserver.observe(section));
+    }, {threshold:0.6});
+    sections.forEach(section=>sectionObserver.observe(section));
 
-    // Hamburger menu
-    const hamburger = document.getElementById("hamburger");
-    const mobileMenu = document.getElementById("mobileMenu");
-    hamburger.addEventListener("click", () => {
-      mobileMenu.classList.toggle("show");
-      hamburger.classList.toggle("open");
-    });
-
-    // Background stars animation
-    const canvas = document.getElementById("bg");
-    const ctx = canvas.getContext("2d");
-    let stars = [];
-    let w, h;
-
-    function initStars(){
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-      stars = [];
-      for(let i=0;i<120;i++){
-        stars.push({
-          x: Math.random()*w,
-          y: Math.random()*h,
-          r: Math.random()*2,
-          d: Math.random()*0.5
-        });
-      }
-    }
-
-    function drawStars(){
-      ctx.clearRect(0,0,w,h);
-      ctx.fillStyle = "white";
-      ctx.beginPath();
-      for(let i=0;i<stars.length;i++){
-        let s = stars[i];
-        ctx.moveTo(s.x,s.y);
-        ctx.arc(s.x,s.y,s.r,0,Math.PI*2,true);
-      }
-      ctx.fill();
-      moveStars();
-    }
-
-    function moveStars(){
-      for(let i=0;i<stars.length;i++){
-        let s = stars[i];
-        s.y += s.d;
-        if(s.y > h){
-          stars[i] = {x: Math.random()*w, y: 0, r: s.r, d: s.d};
-        }
-      }
-    }
-
-    function animateStars(){
-      drawStars();
-      requestAnimationFrame(animateStars);
-    }
-
-    window.addEventListener("resize", initStars);
-    initStars();
-    animateStars();
+    // Toggle sidebar on mobile
+    const menuToggle = document.querySelector(".menu-toggle");
+    const sidebar = document.querySelector(".sidebar");
+    menuToggle.addEventListener("click",()=>{sidebar.classList.toggle("active");});
   </script>
+
 </body>
 </html>
