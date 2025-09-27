@@ -5,19 +5,47 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google-site-verification" content="JwsDk0uEhNOVf-cedZI1-5mAg32D6QBWBX4jkS-qtg0" />
   <title>Giorgio Cosentino | Portfolio</title>
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     /* Reset */
     * {margin:0; padding:0; box-sizing:border-box;}
     html {scroll-behavior:smooth;}
-    body {font-family:'Inter', Arial, sans-serif; background:#0f0f11; color:#e6e6e6; display:flex; line-height:1.6; overflow-x:hidden;}
+    body {
+      font-family:'Inter', Arial, sans-serif;
+      background:#0f0f11;
+      color:#e6e6e6;
+      display:flex;
+      line-height:1.6;
+      overflow-x:hidden;
+    }
 
     a {color:#61dafb; text-decoration:none;}
     a:hover {text-decoration:underline;}
 
+    /* Canvas background */
+    #bg {
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      z-index:-1;
+      background:#0f0f11;
+    }
+
     /* Sidebar */
-    .sidebar {position:fixed; top:0; left:0; width:250px; height:100%; background:rgba(21,21,23,0.95); padding:30px 20px; display:flex; flex-direction:column; justify-content:space-between; z-index:1000; transition: transform 0.3s ease;}
+    .sidebar {
+      position:fixed;
+      top:0; left:0;
+      width:250px; height:100%;
+      background:rgba(21,21,23,0.95);
+      padding:30px 20px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      z-index:1000;
+      transition: transform 0.3s ease;
+    }
     .sidebar h1 {font-size:1.5rem; color:#61dafb; margin-bottom:30px;}
     .sidebar nav a {display:block; margin:15px 0; font-weight:600; transition: color 0.3s;}
     .sidebar nav a.active {color:#fff; text-decoration:underline;}
@@ -62,7 +90,14 @@
     .card a {font-weight:600;}
 
     /* Contact */
-    #contact {display:flex; flex-direction:column; justify-content:center; align-items:center; min-height:80vh;}
+    #contact {
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-start; /* più in alto */
+      align-items:center;
+      min-height:70vh; /* più corto di prima */
+      padding-top:40px; /* inizia più su */
+    }
     .contact-cards {display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:25px; width:100%; max-width:800px;}
     .contact-card {background:#18181c; padding:25px; border-radius:15px; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.5); transition: transform 0.3s, box-shadow 0.3s;}
     .contact-card:hover {transform:translateY(-5px); box-shadow:0 0 20px rgba(97,218,251,0.5);}
@@ -70,37 +105,20 @@
     .contact-card a {font-weight:600; color:#e6e6e6; word-break:break-all;}
     .contact-card a:hover {color:#9ae6ff;}
 
-    /* Stars animation background */
-    .stars, .star {
-      position:absolute;
-      top:0; left:0;
-      width:100%; height:100%;
-      display:block;
-      z-index:-1;
-      background:transparent;
-    }
-    .star {
-      width:2px; height:80px;
-      background:linear-gradient(-45deg, #fff, transparent);
-      position:absolute;
-      top:-10%;
-      animation:fall 3s linear infinite;
-      opacity:0.8;
-    }
-    @keyframes fall {
-      0% {transform:translateY(-100%) rotate(-45deg);}
-      100% {transform:translateY(110vh) rotate(-45deg);}
-    }
-
     /* Mobile */
     .menu-toggle {display:none; position:fixed; top:15px; left:15px; background:#151517; border:none; color:#61dafb; font-size:1.5rem; padding:10px; z-index:1100; cursor:pointer; border-radius:6px;}
-    @media(max-width:768px){.sidebar{transform:translateX(-100%)}.sidebar.active{transform:translateX(0)}.content{margin-left:0}.menu-toggle{display:block}}
+    @media(max-width:768px){
+      .sidebar{transform:translateX(-100%)}
+      .sidebar.active{transform:translateX(0)}
+      .content{margin-left:0}
+      .menu-toggle{display:block}
+    }
   </style>
 </head>
 <body>
 
-  <!-- Stelle cadenti -->
-  <div class="stars"></div>
+  <!-- Canvas for stars -->
+  <canvas id="bg"></canvas>
 
   <button class="menu-toggle">☰</button>
 
@@ -227,7 +245,9 @@
     // Fade-in on scroll
     const sections = document.querySelectorAll("section");
     const observer = new IntersectionObserver(entries=>{
-      entries.forEach(entry=>{ if(entry.isIntersecting){entry.target.classList.add("visible");} });
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){entry.target.classList.add("visible");}
+      });
     }, {threshold:0.2});
     sections.forEach(section=>observer.observe(section));
 
@@ -238,8 +258,7 @@
         if(!entry.isIntersecting) return;
         navLinks.forEach(link=>link.classList.remove("active"));
         const id = entry.target.id || "";
-        const escapedId = (typeof CSS !== "undefined" && typeof CSS.escape==="function") ? CSS.escape(id) : id.replace(/([!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~])/g,"\\$1");
-        const selector = `.sidebar nav a[href="#${escapedId}"]`;
+        const selector = `.sidebar nav a[href="#${id}"]`;
         const link = document.querySelector(selector);
         if(link) link.classList.add("active");
       });
@@ -251,19 +270,57 @@
     const sidebar = document.querySelector(".sidebar");
     menuToggle.addEventListener("click",()=>{sidebar.classList.toggle("active");});
 
-    // Genera stelle cadenti
-    const starsContainer = document.querySelector('.stars');
-    function createStar() {
-      const star = document.createElement('div');
-      star.className = 'star';
-      star.style.left = Math.random() * 100 + 'vw';
-      star.style.animationDuration = (Math.random() * 2 + 2) + 's';
-      star.style.opacity = Math.random();
-      starsContainer.appendChild(star);
-      setTimeout(()=>{ star.remove(); }, 4000);
-    }
-    setInterval(createStar, 200);
-  </script>
+    // Background stars animation (canvas)
+    const canvas = document.getElementById("bg");
+    const ctx = canvas.getContext("2d");
+    let stars = [];
+    let w, h;
 
+    function initStars(){
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+      stars = [];
+      for(let i=0;i<120;i++){
+        stars.push({
+          x: Math.random()*w,
+          y: Math.random()*h,
+          r: Math.random()*2,
+          d: Math.random()*0.5
+        });
+      }
+    }
+
+    function drawStars(){
+      ctx.clearRect(0,0,w,h);
+      ctx.fillStyle = "white";
+      ctx.beginPath();
+      for(let i=0;i<stars.length;i++){
+        let s = stars[i];
+        ctx.moveTo(s.x,s.y);
+        ctx.arc(s.x,s.y,s.r,0,Math.PI*2,true);
+      }
+      ctx.fill();
+      moveStars();
+    }
+
+    function moveStars(){
+      for(let i=0;i<stars.length;i++){
+        let s = stars[i];
+        s.y += s.d;
+        if(s.y > h){
+          stars[i] = {x: Math.random()*w, y: 0, r: s.r, d: s.d};
+        }
+      }
+    }
+
+    function animateStars(){
+      drawStars();
+      requestAnimationFrame(animateStars);
+    }
+
+    window.addEventListener("resize", initStars);
+    initStars();
+    animateStars();
+  </script>
 </body>
 </html>
