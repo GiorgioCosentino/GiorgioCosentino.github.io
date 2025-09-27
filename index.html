@@ -105,14 +105,30 @@
     .contact-card a {font-weight:600; color:#e6e6e6; word-break:break-all;}
     .contact-card a:hover {color:#9ae6ff;}
 
-    /* Mobile */
-    .menu-toggle {display:none; position:fixed; top:15px; left:15px; background:#151517; border:none; color:#61dafb; font-size:1.5rem; padding:10px; z-index:1100; cursor:pointer; border-radius:6px;}
+    /* Mobile adjustments */
     @media(max-width:768px){
-      .sidebar{transform:translateX(-100%)}
-      .sidebar.active{transform:translateX(0)}
-      .content{margin-left:0}
-      .menu-toggle{display:block}
+      .sidebar {
+        display: none; 
+      }
+      .content {
+        margin-left: 0; 
+        padding: 20px; 
+      }
+      #hero {
+        padding-top: 40px;
+      }
+      #typing {
+        font-size: 1.8rem;
+      }
+      #subtitle {
+        font-size: 1rem; 
+      }
+      .about-cards, .projects, .contact-cards {
+        grid-template-columns: 1fr; 
+      }
+      .menu-toggle { display: none; } 
     }
+
   </style>
 </head>
 <body>
