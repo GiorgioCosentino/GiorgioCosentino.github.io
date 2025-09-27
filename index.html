@@ -33,6 +33,12 @@
       background:#0f0f11;
     }
 
+    @media(max-width:768px){
+      .sidebar { display: none; }   /* nasconde la navbar */
+      .content { margin-left: 0; padding: 20px; } /* contenuto a piena larghezza */
+      #hero { padding-top: 40px; }  /* riduce padding se necessario */
+    }
+
     /* Sidebar */
     .sidebar {
       position:fixed;
