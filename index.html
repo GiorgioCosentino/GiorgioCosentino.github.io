@@ -1,286 +1,221 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google-site-verification" content="JwsDk0uEhNOVf-cedZI1-5mAg32D6QBWBX4jkS-qtg0" />
-  <title>Giorgio Cosentino | Portfolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>Portfolio</title>
   <style>
     /* Reset */
-    * {margin:0; padding:0; box-sizing:border-box;}
-    html {scroll-behavior:smooth;}
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
-      font-family:'Inter', Arial, sans-serif;
-      background:#0f0f11;
-      color:#e6e6e6;
-      display:flex;
-      line-height:1.6;
-      overflow-x:hidden;
+      font-family: Arial, sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+      line-height: 1.6;
+      overflow-x: hidden;
     }
 
-    a {color:#61dafb; text-decoration:none;}
-    a:hover {text-decoration:underline;}
-
-    /* Canvas background */
+    /* Background canvas */
     #bg {
-      position:fixed;
-      top:0;
-      left:0;
-      width:100%;
-      height:100%;
-      z-index:-1;
-      background:#0f0f11;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
     }
 
     /* Sidebar */
     .sidebar {
-      position:fixed;
-      top:0; left:0;
-      width:250px; height:100%;
-      background:rgba(21,21,23,0.95);
-      padding:30px 20px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      z-index:1000;
+      position: fixed;
+      top: 0; left: 0;
+      width: 220px; height: 100%;
+      background: rgba(0,0,0,0.85);
+      padding: 20px;
       transition: transform 0.3s ease;
     }
-    .sidebar h1 {font-size:1.5rem; color:#61dafb; margin-bottom:30px;}
-    .sidebar nav a {display:block; margin:15px 0; font-weight:600; transition: color 0.3s;}
-    .sidebar nav a.active {color:#fff; text-decoration:underline;}
-    .sidebar nav a:hover {color:#9ae6ff;}
-    .sidebar footer {font-size:0.85rem; color:#888; text-align:center;}
+    .sidebar h2 {
+      margin-bottom: 20px;
+      font-size: 1.5em;
+    }
+    .sidebar nav ul {
+      list-style-type: disc;
+      padding-left: 20px;
+    }
+    .sidebar nav ul li {
+      margin: 10px 0;
+    }
+    .sidebar nav ul li a {
+      color: #fff;
+      text-decoration: none;
+    }
 
-    /* Content */
-    .content {margin-left:250px; flex:1; padding:60px 20px;}
-    section {min-height:100vh; padding:80px 20px; max-width:1000px; margin:auto; opacity:0; transform:translateY(40px); transition: all 0.8s ease;}
-    section.visible {opacity:1; transform:translateY(0);}
-    section h2 {text-align:center; margin-bottom:40px; font-size:2rem; color:#61dafb;}
+    /* Mobile sidebar hidden */
+    .sidebar.hidden {
+      transform: translateX(-100%);
+    }
+    .menu-toggle {
+      display: none;
+      position: fixed;
+      top: 20px; left: 20px;
+      font-size: 1.8em;
+      background: none;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      z-index: 1001;
+    }
 
-    /* Hero */
-    #hero {display:flex; justify-content:center; align-items:center; flex-direction:column; text-align:center;}
-    #typing {font-size:2.5rem; font-weight:700; color:#61dafb; border-right:3px solid #61dafb; white-space:nowrap; overflow:hidden; width:0; animation: typing 3s steps(30,end) forwards, blink 0.7s infinite;}
-    #subtitle {margin-top:20px; font-size:1.2rem; color:#9ae6ff; text-align:center;}
-    @keyframes typing {from{width:0} to{width:100%}}
-    @keyframes blink {50%{border-color:transparent}}
+    /* Main content */
+    .main {
+      margin-left: 240px;
+      padding: 40px;
+    }
 
-    /* About Section */
-    .about-cards {display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:25px; margin-top:20px;}
-    .about-card {background:#18181c; padding:30px 25px; border-radius:15px; box-shadow:0 6px 18px rgba(0,0,0,0.6); transition: transform 0.3s, box-shadow 0.3s;}
-    .about-card:hover {transform:translateY(-5px); box-shadow:0 0 20px rgba(97,218,251,0.5);}
-    .about-card h3 {margin-bottom:20px; color:#61dafb; text-align:center; font-size:1.5rem;}
-    .about-card ul {list-style:none; padding-left:0;}
-    .about-card ul li {margin-bottom:12px; line-height:1.5; position:relative; padding-left:25px;}
-    .about-card ul li::before {content:"✓"; color:#61dafb; position:absolute; left:0; top:0; font-weight:bold;}
+    section {
+      margin-bottom: 60px;
+    }
 
-    /* Tech lists */
-    .tech-icons {display:flex; flex-direction:column; align-items:center; gap:25px; margin-top:10px;}
-    .tech-icons div {width:100%;}
-    .tech-icons div p {font-weight:600; color:#61dafb; text-align:center; margin-bottom:10px;}
-    .tech-icons ul {list-style:none; padding-left:0;}
-    .tech-icons ul li {margin-bottom:8px;}
+    h1 {
+      font-size: 2.2em;
+      margin-bottom: 20px;
+    }
 
-    /* Projects */
-    .projects {display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:25px;}
-    .card {background:#1b1b1f; padding:20px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.6); transition: transform 0.3s, box-shadow 0.3s;}
-    .card:hover {transform:translateY(-10px) scale(1.02); box-shadow:0 0 20px rgba(97,218,251,0.6);}
-    .card h3 {margin-bottom:10px; color:#9ae6ff;}
-    .card p {margin-bottom:10px; font-size:0.95rem;}
-    .card a {font-weight:600;}
+    /* Typing animation */
+    .typing {
+      font-size: 1.3em;
+      color: #0ff;
+      border-right: 2px solid #0ff;
+      white-space: nowrap;
+      overflow: hidden;
+      width: 0;
+      animation: typing 2s steps(20, end) forwards, blink 0.8s infinite;
+    }
+    @keyframes typing {
+      to { width: 100%; }
+    }
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+
+    /* Projects grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: rgba(255,255,255,0.05);
+      padding: 20px;
+      border-radius: 10px;
+      transition: transform 0.3s;
+    }
+    .card:hover { transform: translateY(-5px); }
 
     /* Contact */
-    #contact {
-      display:flex;
-      flex-direction:column;
-      justify-content:flex-start; /* più in alto */
-      align-items:center;
-      min-height:70vh; /* più corto di prima */
-      padding-top:40px; /* inizia più su */
+    .contact {
+      text-align: center;
+      padding: 40px 20px;
     }
-    .contact-cards {display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:25px; width:100%; max-width:800px;}
-    .contact-card {background:#18181c; padding:25px; border-radius:15px; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.5); transition: transform 0.3s, box-shadow 0.3s;}
-    .contact-card:hover {transform:translateY(-5px); box-shadow:0 0 20px rgba(97,218,251,0.5);}
-    .contact-card p {font-size:1.3rem; color:#61dafb; margin-bottom:10px;}
-    .contact-card a {font-weight:600; color:#e6e6e6; word-break:break-all;}
-    .contact-card a:hover {color:#9ae6ff;}
+    .contact a {
+      display: inline-block;
+      margin: 10px;
+      padding: 12px 20px;
+      background: #0ff;
+      color: #000;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+    }
 
-    /* Mobile */
-    .menu-toggle {display:none; position:fixed; top:15px; left:15px; background:#151517; border:none; color:#61dafb; font-size:1.5rem; padding:10px; z-index:1100; cursor:pointer; border-radius:6px;}
-    @media(max-width:768px){
-      .sidebar{transform:translateX(-100%)}
-      .sidebar.active{transform:translateX(0)}
-      .content{margin-left:0}
-      .menu-toggle{display:block}
+    /* Responsive */
+    @media (max-width: 768px) {
+      .menu-toggle { display: block; }
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.show { transform: translateX(0); }
+      .main { margin-left: 0; padding: 20px; }
+      .typing { font-size: 1.1em; }
+      h1 { font-size: 1.6em; }
     }
   </style>
 </head>
 <body>
-
-  <!-- Canvas for stars -->
   <canvas id="bg"></canvas>
 
   <button class="menu-toggle">☰</button>
-
-  <aside class="sidebar">
-    <div>
-      <h1>Giorgio Cosentino</h1>
-      <nav>
-        <a href="#hero" class="active">Home</a>
-        <a href="#about">About</a>
-        <a href="#projects">Projects</a>
-        <a href="#contact">Contact</a>
-      </nav>
-    </div>
-    <footer>© 2025 Giorgio Cosentino</footer>
+  <aside class="sidebar hidden">
+    <h2>Menu</h2>
+    <nav>
+      <ul>
+        <li><a href="#about">Chi Sono</a></li>
+        <li><a href="#projects">Progetti</a></li>
+        <li><a href="#contact">Contatti</a></li>
+      </ul>
+    </nav>
   </aside>
 
-  <main class="content">
-    <!-- Hero -->
-    <section id="hero">
-      <div id="typing">Hello, I'm Giorgio Cosentino</div>
-      <div id="subtitle">Computer & Biomedical Engineer | Linux & Automation Enthusiast</div>
-    </section>
-
-    <!-- About -->
+  <div class="main">
     <section id="about">
-      <h2>About Me</h2>
-      <p style="text-align:center; margin-bottom:40px;">
-        I'm a <b>Computer and Biomedical Engineer</b> with a strong background in software development and medical imaging.<br>
-        Passionate about <b>Linux</b>, <b>Automation</b>, <b>Open-source software packaging</b>, and <b>Machine Learning</b>.<br>
-        I enjoy solving technical challenges and creating tools that make advanced technologies more accessible to researchers and clinicians.
-      </p>
-      <div class="about-cards">
-        <div class="about-card">
-          <h3>Education</h3>
-          <ul>
-            <li><b>Bachelor's Degree</b> in Computer & Biomedical Engineering (2025)<br>Magna Graecia University, Italy</li>
-            <li><b>High School Diploma</b> in Computer Science & Telecommunications (2021)<br>Technical Industrial Institute "E. Scalfaro", Italy</li>
-          </ul>
-        </div>
-        <div class="about-card">
-          <h3>Expertise</h3>
-          <ul>
-            <li>Linux systems & virtualization (Debian/Ubuntu, VMs)</li>
-            <li>Software packaging (Snapcraft)</li>
-            <li>Medical imaging & visualization (Plastimatch, 3D Slicer)</li>
-            <li>Machine Learning (Autoencoder ECG & other projects)</li>
-            <li>Automation, scripting & containerization (Python, Bash, Docker)</li>
-          </ul>
-        </div>
-        <div class="about-card">
-          <h3>Technologies</h3>
-          <div class="tech-icons">
-            <div>
-              <p>Programming Languages</p>
-              <ul>
-                <li>Python</li>
-                <li>C++</li>
-                <li>Java</li>
-                <li>PHP</li>
-                <li>JavaScript</li>
-              </ul>
-            </div>
-            <div>
-              <p>Tools & Systems</p>
-              <ul>
-                <li>Linux</li>
-                <li>Docker</li>
-                <li>MySQL</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
+      <h1>Ciao, sono Giorgio 👋</h1>
+      <div class="typing" id="typing"></div>
     </section>
 
-    <!-- Projects -->
     <section id="projects">
-      <h2>Projects</h2>
-      <div class="projects">
-        <div class="card">
-          <h3>Plastimatch Docker Snap</h3>
-          <p>Automated Snap package for Plastimatch using Docker and Snapcraft.</p>
-          <a href="https://github.com/GiorgioCosentino/Plastimatch_docker_snap" target="_blank">View on GitHub</a>
-        </div>
-        <div class="card">
-          <h3>Plastimatch Snap</h3>
-          <p>Snap package for Plastimatch, a leading open-source medical imaging tool.</p>
-          <a href="https://github.com/GiorgioCosentino/Plastimatch_snap" target="_blank">View on GitHub</a>
-        </div>
-        <div class="card">
-          <h3>Java Neural Network</h3>
-          <p>Feedforward neural network in Java applied in a mobile game.</p>
-          <a href="https://github.com/GiorgioCosentino/java-neural-network" target="_blank">View on GitHub</a>
-        </div>
-        <div class="card">
-          <h3>GitHub Profile</h3>
-          <p>My personal GitHub profile with repositories and open-source contributions.</p>
-          <a href="https://github.com/GiorgioCosentino" target="_blank">Visit Profile</a>
-        </div>
+      <h1>Progetti</h1>
+      <div class="grid">
+        <div class="card">🚀 Plastimatch Snap Package</div>
+        <div class="card">⚙️ Docker Automation</div>
+        <div class="card">📊 Analisi PGN con Stockfish</div>
       </div>
     </section>
 
-    <!-- Contact -->
-    <section id="contact">
-      <h2>Contact</h2>
-      <div class="contact-cards">
-        <div class="contact-card">
-          <p>📧 Email</p>
-          <a href="mailto:giorcose02@gmail.com">giorcose02@gmail.com</a>
-        </div>
-        <div class="contact-card">
-          <p>🌐 GitHub</p>
-          <a href="https://github.com/GiorgioCosentino" target="_blank">github.com/GiorgioCosentino</a>
-        </div>
-        <div class="contact-card">
-          <p>💼 LinkedIn</p>
-          <a href="https://www.linkedin.com/in/giorgio-cosentino-75b986363/" target="_blank">linkedin.com/in/giorgio-cosentino</a>
-        </div>
-      </div>
+    <section id="contact" class="contact">
+      <h1>Contattami</h1>
+      <a href="mailto:tuo@email.com">Email</a>
+      <a href="https://github.com/GiorgioCosentino" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/tuo-profilo" target="_blank">LinkedIn</a>
     </section>
-  </main>
+  </div>
 
   <script>
-    // Fade-in on scroll
-    const sections = document.querySelectorAll("section");
-    const observer = new IntersectionObserver(entries=>{
-      entries.forEach(entry=>{
-        if(entry.isIntersecting){entry.target.classList.add("visible");}
-      });
-    }, {threshold:0.2});
-    sections.forEach(section=>observer.observe(section));
-
-    // Navbar active link
-    const navLinks = document.querySelectorAll(".sidebar nav a");
-    const sectionObserver = new IntersectionObserver(entries=>{
-      entries.forEach(entry=>{
-        if(!entry.isIntersecting) return;
-        navLinks.forEach(link=>link.classList.remove("active"));
-        const id = entry.target.id || "";
-        const selector = `.sidebar nav a[href="#${id}"]`;
-        const link = document.querySelector(selector);
-        if(link) link.classList.add("active");
-      });
-    }, {threshold:0.6});
-    sections.forEach(section=>sectionObserver.observe(section));
-
-    // Toggle sidebar on mobile
+    // Sidebar toggle
     const menuToggle = document.querySelector(".menu-toggle");
     const sidebar = document.querySelector(".sidebar");
-    menuToggle.addEventListener("click",()=>{sidebar.classList.toggle("active");});
+    menuToggle.addEventListener("click", () => {
+      sidebar.classList.toggle("show");
+    });
 
-    // Background stars animation (canvas)
+    // Typing effect
+    const typingEl = document.getElementById("typing");
+    const texts = ["Software Engineer", "AI & Machine Learning", "Medical Imaging"];
+    let textIndex = 0;
+
+    function typeText(text) {
+      typingEl.textContent = "";
+      typingEl.style.width = "0";
+      typingEl.style.animation = "none";
+      void typingEl.offsetWidth;
+      typingEl.style.animation = `typing ${text.length/10}s steps(${text.length}, end) forwards, blink .8s infinite`;
+      typingEl.textContent = text;
+    }
+
+    typeText(texts[textIndex]);
+    setInterval(() => {
+      textIndex = (textIndex + 1) % texts.length;
+      typeText(texts[textIndex]);
+    }, 2500);
+
+    // Background stars
     const canvas = document.getElementById("bg");
     const ctx = canvas.getContext("2d");
-    let stars = [];
-    let w, h;
+    let stars = [], w, h;
 
     function initStars(){
       w = canvas.width = window.innerWidth;
       h = canvas.height = window.innerHeight;
       stars = [];
-      for(let i=0;i<120;i++){
+      let starCount = window.innerWidth < 768 ? 60 : 120;
+      for(let i=0;i<starCount;i++){
         stars.push({
           x: Math.random()*w,
           y: Math.random()*h,
