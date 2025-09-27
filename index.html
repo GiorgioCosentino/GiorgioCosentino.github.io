@@ -32,13 +32,7 @@
       z-index:-1;
       background:#0f0f11;
     }
-
-    @media(max-width:768px){
-      .sidebar { display: none; }   /* nasconde la navbar */
-      .content { margin-left: 0; padding: 20px; } /* contenuto a piena larghezza */
-      #hero { padding-top: 40px; }  /* riduce padding se necessario */
-    }
-
+    
     /* Sidebar */
     .sidebar {
       position:fixed;
@@ -99,10 +93,10 @@
     #contact {
       display:flex;
       flex-direction:column;
-      justify-content:flex-start; /* più in alto */
+      justify-content:flex-start; 
       align-items:center;
-      min-height:70vh; /* più corto di prima */
-      padding-top:40px; /* inizia più su */
+      min-height:70vh; 
+      padding-top:40px; 
     }
     .contact-cards {display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:25px; width:100%; max-width:800px;}
     .contact-card {background:#18181c; padding:25px; border-radius:15px; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.5); transition: transform 0.3s, box-shadow 0.3s;}
@@ -110,6 +104,15 @@
     .contact-card p {font-size:1.3rem; color:#61dafb; margin-bottom:10px;}
     .contact-card a {font-weight:600; color:#e6e6e6; word-break:break-all;}
     .contact-card a:hover {color:#9ae6ff;}
+
+    /* Mobile */
+    .menu-toggle {display:none; position:fixed; top:15px; left:15px; background:#151517; border:none; color:#61dafb; font-size:1.5rem; padding:10px; z-index:1100; cursor:pointer; border-radius:6px;}
+    @media(max-width:768px){
+      .sidebar{transform:translateX(-100%)}
+      .sidebar.active{transform:translateX(0)}
+      .content{margin-left:0}
+      .menu-toggle{display:block}
+    }
   </style>
 </head>
 <body>
@@ -203,12 +206,12 @@
         <div class="card">
           <h3>Plastimatch Snap</h3>
           <p>Snap package for Plastimatch, a leading open-source medical imaging tool.</p>
-          <a href="https://github.com/GiorgioCosentino/Plastimatch_snap" target="_blank">View on GitHub</a>
+          <a href="https://github.com/GiorgioCosentino/Plastimatch-snap" target="_blank">View on GitHub</a>
         </div>
         <div class="card">
           <h3>Java Neural Network</h3>
           <p>Feedforward neural network in Java applied in a mobile game.</p>
-          <a href="https://github.com/GiorgioCosentino/java-neural-network" target="_blank">View on GitHub</a>
+          <a href="https://github.com/GiorgioCosentino/NeuralNetwork" target="_blank">View on GitHub</a>
         </div>
         <div class="card">
           <h3>GitHub Profile</h3>
