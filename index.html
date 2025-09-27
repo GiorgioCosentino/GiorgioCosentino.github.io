@@ -1,333 +1,196 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google-site-verification" content="JwsDk0uEhNOVf-cedZI1-5mAg32D6QBWBX4jkS-qtg0" />
-  <title>Giorgio Cosentino | Portfolio</title>
+  <title>Portfolio</title>
   <style>
     /* Reset */
-    * {margin: 0; padding: 0; box-sizing: border-box;}
-    html { scroll-behavior: smooth; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: #0f0f11;
-      color: #e6e6e6;
+      font-family: Arial, sans-serif;
+      background: #0a0a0a;
+      color: #fff;
       line-height: 1.6;
       overflow-x: hidden;
-      position: relative;
     }
 
-    canvas#bg {
+    /* Background canvas */
+    #bg {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
       z-index: -1;
     }
 
-    a { color: #61dafb; text-decoration: none; transition: 0.3s; }
-    a:hover { color: #9ae6ff; }
-
-    /* Navbar */
-    header {
+    /* Sidebar (desktop only) */
+    .sidebar {
       position: fixed;
-      width: 100%;
-      top: 0;
-      background: rgba(21,21,23,0.95);
-      padding: 15px 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 1000;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+      top: 0; left: 0;
+      width: 220px; height: 100%;
+      background: rgba(0,0,0,0.85);
+      padding: 20px;
+      transition: transform 0.3s ease;
     }
-
-    header h1 { font-size: 1.3rem; color: #61dafb; font-weight: 600; }
-
-    nav {
-      display: flex;
-      gap: 20px;
+    .sidebar h2 {
+      margin-bottom: 20px;
+      font-size: 1.5em;
     }
-    nav a {
-      font-weight: bold;
+    .sidebar nav ul {
+      list-style-type: disc;
+      padding-left: 20px;
     }
-    nav a.active { color: #fff; text-decoration: underline; }
-
-    /* Hamburger */
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      cursor: pointer;
-      gap: 5px;
-    }
-    .hamburger span {
-      width: 25px;
-      height: 3px;
-      background: #61dafb;
-      border-radius: 2px;
-      transition: 0.3s;
-    }
-
-    /* Mobile nav hidden by default */
-    nav.mobile {
-      display: none;
-      flex-direction: column;
-      position: absolute;
-      top: 60px;
-      right: 20px;
-      background: #151517;
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.6);
-    }
-    nav.mobile a {
+    .sidebar nav ul li {
       margin: 10px 0;
     }
-    nav.mobile.show { display: flex; }
-
-    /* Hero */
-    #hero {
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      text-align: center;
-      padding: 0 10px;
+    .sidebar nav ul li a {
+      color: #fff;
+      text-decoration: none;
     }
 
-    #typing {
-      font-size: clamp(1.8rem, 6vw, 3rem);
-      font-weight: bold;
-      color: #61dafb;
-      border-right: 3px solid #61dafb;
+    /* Main content */
+    .main {
+      margin-left: 240px;
+      padding: 40px;
+    }
+
+    section {
+      margin-bottom: 60px;
+    }
+
+    h1 {
+      font-size: 2.2em;
+      margin-bottom: 20px;
+    }
+
+    /* Typing animation */
+    .typing {
+      font-size: 1.3em;
+      color: #0ff;
+      border-right: 2px solid #0ff;
       white-space: nowrap;
       overflow: hidden;
       width: 0;
-      animation: typing 3s steps(30, end) forwards, blink 0.7s infinite;
+      animation: typing 2s steps(20, end) forwards, blink 0.8s infinite;
+    }
+    @keyframes typing {
+      to { width: 100%; }
+    }
+    @keyframes blink {
+      50% { border-color: transparent; }
     }
 
-    @keyframes typing { from { width: 0 } to { width: 100% } }
-    @keyframes blink { 50% { border-color: transparent } }
-
-    /* Sections */
-    section {
-      padding: 80px 20px;
-      max-width: 1000px;
-      margin: auto;
-      opacity: 0;
-      transform: translateY(40px);
-      transition: all 0.8s ease;
-    }
-    section.visible { opacity: 1; transform: translateY(0); }
-
-    section h2 {
-      text-align: center;
-      margin-bottom: 40px;
-      font-size: 2.2rem;
-      color: #61dafb;
-      animation: pulse 3s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { text-shadow: 0 0 10px rgba(97,218,251,0.4); }
-      50% { text-shadow: 0 0 25px rgba(97,218,251,0.8); }
-    }
-
-    /* About */
-    #about p {
-      max-width: 700px;
-      margin: auto;
-      font-size: 1.1rem;
-      text-align: center;
-    }
-
-    /* Projects */
-    .projects {
+    /* Projects grid */
+    .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 25px;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
     }
-
     .card {
-      background: #1b1b1f;
+      background: rgba(255,255,255,0.05);
       padding: 20px;
-      border-radius: 14px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-      transition: transform 0.4s, box-shadow 0.4s;
-      opacity: 0;
-      transform: translateY(40px);
-      animation: fadeUp 1s forwards;
+      border-radius: 10px;
+      transition: transform 0.3s;
     }
-    .card:nth-child(1){animation-delay:0.3s}
-    .card:nth-child(2){animation-delay:0.5s}
-    .card:nth-child(3){animation-delay:0.7s}
-    .card:nth-child(4){animation-delay:0.9s}
-
-    @keyframes fadeUp {
-      to { opacity:1; transform: translateY(0); }
-    }
-
-    .card:hover {
-      transform: translateY(-10px) scale(1.03);
-      box-shadow: 0 0 20px rgba(97, 218, 251, 0.6);
-    }
-
-    .card h3 { margin-bottom: 10px; color: #9ae6ff; }
-    .card p { margin-bottom: 10px; font-size: 0.95rem; }
-    .card a { font-weight: bold; }
+    .card:hover { transform: translateY(-5px); }
 
     /* Contact */
-    #contact p { text-align: center; font-size: 1.1rem; }
-
-    /* Footer */
-    footer {
+    .contact {
       text-align: center;
-      padding: 20px;
-      background: #151517;
-      color: #888;
-      font-size: 0.9rem;
+      padding: 40px 20px;
+    }
+    .contact a {
+      display: inline-block;
+      margin: 10px;
+      padding: 12px 20px;
+      background: #0ff;
+      color: #000;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
     }
 
-    .spacer { height: 70px; }
-
-    /* Mobile tweaks */
+    /* Responsive: mobile full-width scroll, hide sidebar */
     @media (max-width: 768px) {
-      nav.desktop { display: none; }
-      .hamburger { display: flex; }
-      section { padding: 60px 15px; }
-      .card { padding: 15px; }
+      .sidebar { display: none; }
+      .main { margin-left: 0; padding: 20px; }
+      .typing { font-size: 1.1em; }
+      h1 { font-size: 1.6em; }
     }
   </style>
 </head>
 <body>
-  <!-- Background canvas -->
   <canvas id="bg"></canvas>
 
-  <!-- Navbar -->
-  <header>
-    <h1>Giorgio Cosentino</h1>
-    <nav class="desktop">
-      <a href="#hero" class="active">Home</a>
-      <a href="#about">About</a>
-      <a href="#projects">Projects</a>
-      <a href="#contact">Contact</a>
+  <!-- Sidebar (desktop only) -->
+  <aside class="sidebar">
+    <h2>Menu</h2>
+    <nav>
+      <ul>
+        <li><a href="#about">Chi Sono</a></li>
+        <li><a href="#projects">Progetti</a></li>
+        <li><a href="#contact">Contatti</a></li>
+      </ul>
     </nav>
-    <div class="hamburger" id="hamburger">
-      <span></span><span></span><span></span>
-    </div>
-    <nav class="mobile" id="mobileMenu">
-      <a href="#hero">Home</a>
-      <a href="#about">About</a>
-      <a href="#projects">Projects</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
+  </aside>
 
-  <div class="spacer"></div>
+  <div class="main">
+    <section id="about">
+      <h1>Ciao, sono Giorgio 👋</h1>
+      <div class="typing" id="typing"></div>
+    </section>
 
-  <!-- Hero -->
-  <section id="hero">
-    <div id="typing">Hello, I'm Giorgio Cosentino</div>
-  </section>
-
-  <!-- About -->
-  <section id="about">
-    <h2>About</h2>
-    <p>
-      I'm a <b>software and medical imaging engineer</b> with a background in computer and biomedical engineering.  
-      I am passionate about <b>Linux</b>, <b>automation</b>, <b>medical imaging</b>, and <b>machine learning</b>.  
-      This site showcases my projects and provides links to my GitHub repositories.
-    </p>
-  </section>
-
-  <!-- Projects -->
-  <section id="projects">
-    <h2>Projects</h2>
-    <div class="projects">
-      <div class="card">
-        <h3>Plastimatch Docker Snap</h3>
-        <p>Automated Snap package for Plastimatch using Docker and Snapcraft.</p>
-        <a href="https://github.com/GiorgioCosentino/Plastimatch_docker_snap" target="_blank">View on GitHub</a>
+    <section id="projects">
+      <h1>Progetti</h1>
+      <div class="grid">
+        <div class="card">🚀 Plastimatch Snap Package</div>
+        <div class="card">⚙️ Docker Automation</div>
+        <div class="card">📊 Analisi PGN con Stockfish</div>
       </div>
-      <div class="card">
-        <h3>Plastimatch Snap</h3>
-        <p>Snap package for Plastimatch, a leading open-source medical imaging tool.</p>
-        <a href="https://github.com/GiorgioCosentino/Plastimatch-snap" target="_blank">View on GitHub</a>
-      </div>
-      <div class="card">
-        <h3>Java Neural Network</h3>
-        <p>Feedforward neural network in Java applied in a mobile game.</p>
-        <a href="https://github.com/GiorgioCosentino/NeuralNetwork" target="_blank">View on GitHub</a>
-      </div>
-      <div class="card">
-        <h3>GitHub Profile</h3>
-        <p>My personal GitHub profile with repositories and open-source contributions.</p>
-        <a href="https://github.com/GiorgioCosentino" target="_blank">Visit Profile</a>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Contact -->
-  <section id="contact">
-    <h2>Contact</h2>
-    <p>
-      📧 <a href="mailto:giorcose02@gmail.com">giorcose02@gmail.com</a><br>
-      🌐 <a href="https://github.com/GiorgioCosentino" target="_blank">GitHub Profile</a>
-    </p>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    © 2025 Giorgio Cosentino. Built with GitHub Pages.
-  </footer>
+    <section id="contact" class="contact">
+      <h1>Contattami</h1>
+      <a href="mailto:tuo@email.com">Email</a>
+      <a href="https://github.com/GiorgioCosentino" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/tuo-profilo" target="_blank">LinkedIn</a>
+    </section>
+  </div>
 
   <script>
-    // Fade-in on scroll
-    const sections = document.querySelectorAll("section");
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting){
-          entry.target.classList.add("visible");
-        }
-      });
-    }, { threshold: 0.2 });
-    sections.forEach(section => observer.observe(section));
+    // Typing effect
+    const typingEl = document.getElementById("typing");
+    const texts = ["Software Engineer", "AI & Machine Learning", "Medical Imaging"];
+    let textIndex = 0;
 
-    // Navbar active link
-    const navLinks = document.querySelectorAll("nav.desktop a");
-    const options = { threshold: 0.6 };
-    const sectionObserver = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting){
-          navLinks.forEach(link => link.classList.remove("active"));
-          document.querySelector(`nav.desktop a[href="#${entry.target.id}"]`).classList.add("active");
-        }
-      });
-    }, options);
-    sections.forEach(section => sectionObserver.observe(section));
+    function typeText(text) {
+      typingEl.textContent = "";
+      typingEl.style.width = "0";
+      typingEl.style.animation = "none";
+      void typingEl.offsetWidth;
+      typingEl.style.animation = `typing ${text.length/10}s steps(${text.length}, end) forwards, blink .8s infinite`;
+      typingEl.textContent = text;
+    }
 
-    // Hamburger menu
-    const hamburger = document.getElementById("hamburger");
-    const mobileMenu = document.getElementById("mobileMenu");
-    hamburger.addEventListener("click", () => {
-      mobileMenu.classList.toggle("show");
-      hamburger.classList.toggle("open");
-    });
+    typeText(texts[textIndex]);
+    setInterval(() => {
+      textIndex = (textIndex + 1) % texts.length;
+      typeText(texts[textIndex]);
+    }, 2500);
 
-    // Background stars animation
+    // Background stars
     const canvas = document.getElementById("bg");
     const ctx = canvas.getContext("2d");
-    let stars = [];
-    let w, h;
+    let stars = [], w, h;
 
     function initStars(){
       w = canvas.width = window.innerWidth;
       h = canvas.height = window.innerHeight;
       stars = [];
-      for(let i=0;i<120;i++){
+      let starCount = window.innerWidth < 768 ? 60 : 120;
+      for(let i=0;i<starCount;i++){
         stars.push({
           x: Math.random()*w,
           y: Math.random()*h,
